@@ -1,7 +1,7 @@
 import os
 
 import tweeter
-import reddit_scraper_new
+import reddit_scraper
 
 from settings import LOG_FILENAME
 
