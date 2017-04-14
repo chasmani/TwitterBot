@@ -1,4 +1,5 @@
 import os
+import logging
 
 import tweeter
 import reddit_scraper
