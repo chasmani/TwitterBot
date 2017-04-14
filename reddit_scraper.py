@@ -38,6 +38,8 @@ def get_reddit_soup(url, attempt=0, max_attempts=5):
 			attempt += 1
 		else:
 			return soup
+	if attempt == max_attempts:
+		logging.error("Max attempts exceeded")
 
 
 def get_reddit_image_post_urls(subreddit):
