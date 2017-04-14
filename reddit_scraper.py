@@ -24,18 +24,18 @@ def get_subreddit_page_and_print():
 	print(soup.prettify())
 
 
-def get_reddit_soup(url, attempt=1, max_attempts=5):
+def get_reddit_soup(url, attempt=0, max_attempts=5):
 	#Get soup from a reddit url
 	# If reddit blocks the request the try again after a time delay
-	print("Attempt " + str(attempt) + " - Fetching soup from " + url)
-	if attempt <= max_attempts:
+	while attempt <= max_attempts:
+		print("Attempt " + str(attempt) + " - Fetching soup from " + url)
 		page = requests.get(url)
 		soup = BeautifulSoup(page.content, "html.parser")
 		# If reddit blocks the scraper, be nice and wait a while
-		if (soup.title.text == "Too Many Requests") or (not soup):
+		if soup.title.text == "Too Many Requests":
 			print("Blocked by reddit")
 			time.sleep(2 + attempt)
-			get_reddit_soup(url, attempt=attempt+1)
+			attempt += 1
 		else:
 			return soup
 
@@ -57,9 +57,10 @@ def get_reddit_image_post_urls(subreddit):
 				post_link = post_div.find("a", {"class":"may-blank"})["href"]
 				reddit_image_links.append(post_link)
 		return reddit_image_links
-	except:
-		print(soup)
-		logging.error(soup.title)
+	except Exception as e:
+		logging.error(str(e))
+		
+
 
 
 def get_img(post_url):
